@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { OUTPUT_IMAGE_PATH } from '../main';
 import { getFileName, readDirs } from '../utils/FileUtil';
+import { OUTPUT_IMAGE_PATH } from '../main';
 
 const mime = require('mime');
 let images: Array<string> = [];
@@ -9,17 +9,18 @@ let lastFetchTime: number = 0;
 
 @Injectable()
 export class StaticMiddleware implements NestMiddleware {
+  protected readonly sourcesPath: string = OUTPUT_IMAGE_PATH;
+
   async use(req: Request, res: Response, next: NextFunction) {
     let target = decodeURI(getFileName(req.url));
+
     if (!target) {
       next();
       return;
     }
 
-    console.log(lastFetchTime, new Date().getTime());
     if (lastFetchTime + 5000 < new Date().getTime()) {
-      console.log('fetch new list');
-      images = await readDirs(OUTPUT_IMAGE_PATH);
+      images = await readDirs(this.sourcesPath);
       lastFetchTime = new Date().getTime();
     }
     if (images.length <= 0) {
@@ -30,7 +31,7 @@ export class StaticMiddleware implements NestMiddleware {
     let result: string | undefined;
     for (let image of images) {
       if (target === image) {
-        result = `${OUTPUT_IMAGE_PATH}\\${target}`;
+        result = `${this.sourcesPath}\\${target}`;
         break;
       }
     }
