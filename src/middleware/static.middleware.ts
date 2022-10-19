@@ -21,6 +21,7 @@ export class StaticMiddleware implements NestMiddleware {
 
     if (lastFetchTime + 5000 < new Date().getTime()) {
       images = await readDirs(this.sourcesPath);
+      console.log(images);
       lastFetchTime = new Date().getTime();
     }
     if (images.length <= 0) {

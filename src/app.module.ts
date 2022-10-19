@@ -1,18 +1,16 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './controller/app.controller';
 import { AppService } from './services/app.service';
-import { StaticMiddleware } from './middleware/static.middleware';
-import { StaticController } from './controller/static.controller';
-import { VueMiddleware } from './middleware/vue.middleware';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { STATIC_ROOT } from './main';
 
 @Module({
-  imports: [],
-  controllers: [AppController, StaticController],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: STATIC_ROOT,
+    }),
+  ],
+  controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  configure(consumer) {
-    consumer.apply(StaticMiddleware).forRoutes(StaticController);
-    consumer.apply(VueMiddleware).forRoutes(AppController);
-  }
-}
+export class AppModule {}

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { OUTPUT_IMAGE_PATH } from '../main';
-import { readDirs } from '../utils/FileUtil';
+import { readDirForOneLayer } from '../utils/FileUtil';
+import { STATIC_ROOT } from '../main';
 
 @Injectable()
 export class AppService {
   getAllFile(): Promise<Array<string>> {
-    let dirPath = OUTPUT_IMAGE_PATH;
+    let dirPath = STATIC_ROOT;
     if (!dirPath) return null;
-    return readDirs(dirPath);
+    return readDirForOneLayer(dirPath);
   }
 }

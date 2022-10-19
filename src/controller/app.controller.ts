@@ -9,9 +9,4 @@ export class AppController {
   getDirs(): Promise<Array<string>> {
     return this.appService.getAllFile();
   }
-
-  @Get(['/**', '/assets/**'])
-  getStatic(): string {
-    return 'File Not Exist.';
-  }
 }
