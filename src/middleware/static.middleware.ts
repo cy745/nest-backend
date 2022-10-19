@@ -42,6 +42,7 @@ export abstract class StaticMiddleware implements NestMiddleware {
     }
 
     res.setHeader('Content-Type', mime.getType(result));
+    res.setHeader('Cache-Control', 'public');
     return res.sendFile(result);
   }
 }
