@@ -41,7 +41,7 @@ export let readDirForOneLayer = (dirPath: string): Promise<Array<string>> => {
   return new Promise((resolve, reject) => {
     try {
       fs.readdir(dirPath, (err, files) => {
-        err ? reject(err) : resolve(files);
+        err ? reject(err) : resolve(files.filter((i) => checkIsFile(i)));
       });
     } catch (e) {
       resolve([]);
